@@ -1,5 +1,8 @@
 # Revolut Live Coding Questions
 
+> [!IMPORTANT]
+> Thanks to ongoing feedback from candidates interviewing at Revolut, the material in this repository remains accurate and relevant for interview preparation as of **December 2025**.
+
 This repository contains Python-based solutions to three core coding problems commonly encountered in Revolut's interview process:
 
 - Load Balancer
