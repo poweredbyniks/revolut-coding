@@ -1,4 +1,4 @@
-package com.revolut.lb;
+package com.revolut.loadbalancer;
 
 public class NoServersAvailableException extends RuntimeException {
     public NoServersAvailableException() {

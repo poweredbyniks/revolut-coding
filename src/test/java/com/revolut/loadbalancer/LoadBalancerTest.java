@@ -1,4 +1,4 @@
-package com.revolut.lb;
+package com.revolut.loadbalancer;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

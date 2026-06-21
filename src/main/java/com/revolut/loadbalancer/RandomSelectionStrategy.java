@@ -1,4 +1,4 @@
-package com.revolut.lb;
+package com.revolut.loadbalancer;
 
 import java.util.List;
 import java.util.Random;
