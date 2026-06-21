@@ -18,4 +18,9 @@ public class Account {
     public boolean compareAndSwap(long expected, long newValue) {
         return balance.compareAndSet(expected, newValue);
     }
+
+    // Unconditional, so getAndAdd's built-in retry loop is sufficient (no precondition to enforce).
+    public void deposit(long amount) {
+        balance.getAndAdd(amount);
+    }
 }

@@ -52,6 +52,29 @@ class LedgerCasTest {
     }
 
     @Test
+    void testTransferNegativeAmountThrows() {
+        Account acc1 = new Account(1, 100);
+        Account acc2 = new Account(2, 100);
+        assertThrows(IllegalArgumentException.class, () -> Ledger.transferMoney(acc1, acc2, -10));
+        assertEquals(100, acc1.getBalance());
+        assertEquals(100, acc2.getBalance());
+    }
+
+    @Test
+    void testTransferNullAccountThrows() {
+        Account acc1 = new Account(1, 100);
+        assertThrows(IllegalArgumentException.class, () -> Ledger.transferMoney(null, acc1, 10));
+        assertThrows(IllegalArgumentException.class, () -> Ledger.transferMoney(acc1, null, 10));
+    }
+
+    @Test
+    void testTransferToSameAccountIsNoOp() {
+        Account acc1 = new Account(1, 100);
+        assertTrue(Ledger.transferMoney(acc1, acc1, 50));
+        assertEquals(100, acc1.getBalance());
+    }
+
+    @Test
     void testBidirectionalConcurrentTransfers() throws InterruptedException {
         Account acc1 = new Account(1, 1000);
         Account acc2 = new Account(2, 1000);

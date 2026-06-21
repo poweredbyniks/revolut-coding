@@ -142,9 +142,9 @@ class LoadBalancerTest {
 
         double expectedFreq = (double) numTrials / servers.size();
         double maxDeviation = results.values().stream()
-            .mapToDouble(freq -> Math.abs((freq - expectedFreq) / expectedFreq))
-            .max()
-            .orElse(0);
+                .mapToDouble(freq -> Math.abs((freq - expectedFreq) / expectedFreq))
+                .max()
+                .orElse(0);
 
         assertTrue(maxDeviation < 0.5);
     }
@@ -174,6 +174,21 @@ class LoadBalancerTest {
         lb.register("server1");
         lb.unregister("server1");
         assertThrows(NoServersAvailableException.class, lb::get);
+    }
+
+    @Test
+    void testRandomStrategyThrowsWhenEmpty() {
+        RandomSelectionStrategy strategy = new RandomSelectionStrategy();
+        LoadBalancer lb = new LoadBalancer(strategy);
+        assertThrows(NoServersAvailableException.class, lb::get);
+    }
+
+    @Test
+    void testLbInitWithStrategyConstructorRaises() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new LoadBalancer(0, new RoundRobinSelectionStrategy()));
+        assertThrows(IllegalArgumentException.class,
+                () -> new LoadBalancer(-1, new RoundRobinSelectionStrategy()));
     }
 
     @Test

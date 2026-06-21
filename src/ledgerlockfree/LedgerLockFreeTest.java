@@ -49,6 +49,37 @@ class LedgerLockFreeTest {
     }
 
     @Test
+    void testTransferNegativeAmountThrows() throws InterruptedException {
+        Account acc1 = new Account(1, new BigDecimal("100"));
+        Account acc2 = new Account(2, new BigDecimal("100"));
+        Ledger ledger = new Ledger();
+        assertThrows(IllegalArgumentException.class,
+                () -> ledger.transferMoney(acc1, acc2, new BigDecimal("-10")));
+        ledger.shutdown();
+    }
+
+    @Test
+    void testTransferNullAccountThrows() throws InterruptedException {
+        Account acc1 = new Account(1, new BigDecimal("100"));
+        Ledger ledger = new Ledger();
+        assertThrows(IllegalArgumentException.class,
+                () -> ledger.transferMoney(null, acc1, new BigDecimal("10")));
+        assertThrows(IllegalArgumentException.class,
+                () -> ledger.transferMoney(acc1, null, new BigDecimal("10")));
+        ledger.shutdown();
+    }
+
+    @Test
+    void testTransferToSameAccountIsNoOp() throws InterruptedException {
+        Account acc1 = new Account(1, new BigDecimal("100"));
+        Ledger ledger = new Ledger();
+        ledger.transferMoney(acc1, acc1, new BigDecimal("50"));
+        ledger.join();
+        assertEquals(0, new BigDecimal("100").compareTo(acc1.getBalance()));
+        ledger.shutdown();
+    }
+
+    @Test
     void testBidirectionalConcurrentTransfers() throws InterruptedException {
         Account acc1 = new Account(1, new BigDecimal("1000"));
         Account acc2 = new Account(2, new BigDecimal("1000"));

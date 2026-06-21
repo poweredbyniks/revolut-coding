@@ -2,6 +2,9 @@ package com.revolut.ledger;
 
 public class Ledger {
     public static boolean transferMoney(Account from, Account to, long amount) {
+        if (from == null || to == null) throw new IllegalArgumentException("Accounts must not be null");
+        if (amount < 0) throw new IllegalArgumentException("Amount must not be negative");
+
         Account first = from.getAccountId() < to.getAccountId() ? from : to;
         Account second = from.getAccountId() < to.getAccountId() ? to : from;
 

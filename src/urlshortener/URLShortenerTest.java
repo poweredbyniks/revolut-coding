@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class URLShortenerTest {
 
     private static final List<String> TEST_URLS = List.of(
-        "https://example.com",
-        "https://test.com/page1",
-        "https://another-example.org/about"
+            "https://example.com",
+            "https://test.com/page1",
+            "https://another-example.org/about"
     );
 
     @Test
@@ -66,6 +66,18 @@ class URLShortenerTest {
     void testInvalidUrlHandling() {
         URLShortener shortener = new URLShortener(new CounterStrategy());
         assertThrows(IllegalArgumentException.class, () -> shortener.shorten("invalid-url"));
+    }
+
+    @Test
+    void testNullUrlThrowsIllegalArgumentException() {
+        URLShortener shortener = new URLShortener(new CounterStrategy());
+        assertThrows(IllegalArgumentException.class, () -> shortener.shorten(null));
+    }
+
+    @Test
+    void testEmptyUrlThrowsIllegalArgumentException() {
+        URLShortener shortener = new URLShortener(new CounterStrategy());
+        assertThrows(IllegalArgumentException.class, () -> shortener.shorten(""));
     }
 
     @Test

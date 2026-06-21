@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class URLShortener {
     private static final Pattern URL_PATTERN =
-        Pattern.compile("^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w .-]*)*/?$");
+            Pattern.compile("^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w .-]*)*/?$");
 
     private final ReentrantLock lock = new ReentrantLock();
     private final Map<String, String> urlMap = new HashMap<>();
@@ -46,6 +46,6 @@ public class URLShortener {
     }
 
     private boolean isValidUrl(String url) {
-        return URL_PATTERN.matcher(url).matches();
+        return url != null && URL_PATTERN.matcher(url).matches();
     }
 }
