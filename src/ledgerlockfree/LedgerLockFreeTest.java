@@ -33,6 +33,7 @@ class LedgerLockFreeTest {
         BigDecimal finalTotal = acc1.getBalance().add(acc2.getBalance());
         assertEquals(0, initialTotal.compareTo(finalTotal));
         assertTrue(endTime - startTime < 5000);
+        ledger.shutdown();
     }
 
     @Test
@@ -44,6 +45,7 @@ class LedgerLockFreeTest {
         ledger.join();
         assertEquals(0, new BigDecimal("30").compareTo(acc1.getBalance()));
         assertEquals(0, new BigDecimal("100").compareTo(acc2.getBalance()));
+        ledger.shutdown();
     }
 
     @Test
@@ -67,5 +69,6 @@ class LedgerLockFreeTest {
 
         assertEquals(0, initialTotal.compareTo(acc1.getBalance().add(acc2.getBalance())));
         assertTrue(endTime - startTime < 5000);
+        ledger.shutdown();
     }
 }

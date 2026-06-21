@@ -11,11 +11,16 @@ public class Ledger {
     private final BlockingQueue<TransferRequest> queue = new LinkedBlockingQueue<>();
     private final AtomicInteger pending = new AtomicInteger(0);
     private final Object joinLock = new Object();
+    private final Thread worker;
 
     public Ledger() {
-        Thread t = new Thread(this::processTransactions);
-        t.setDaemon(true);
-        t.start();
+        worker = new Thread(this::processTransactions);
+        worker.start();
+    }
+
+    public void shutdown() throws InterruptedException {
+        worker.interrupt();
+        worker.join();
     }
 
     public void transferMoney(Account from, Account to, BigDecimal amount) {
