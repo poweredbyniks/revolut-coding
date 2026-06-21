@@ -1,7 +1,3 @@
-/*
-    Written by Bohdan Shtepan <bohdan@shtepan.com>, February 2025
- */
-
 CREATE TABLE accounts (
     account_id INT PRIMARY KEY AUTO_INCREMENT,
     balance DECIMAL(18,2) NOT NULL CHECK (balance >= 0),

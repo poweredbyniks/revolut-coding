@@ -1,7 +1,3 @@
-/*
-    Written by Bohdan Shtepan <bohdan@shtepan.com>, February 2025
- */
-
 START TRANSACTION;
 -- Deduct money from sender if version matches (ensures no concurrent modification)
 UPDATE accounts

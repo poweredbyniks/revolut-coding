@@ -1,7 +1,3 @@
-/*
-    Written by Bohdan Shtepan <bohdan@shtepan.com>, February 2025
- */
-
 START TRANSACTION;
 -- Lock both accounts for the duration of the transaction
 SELECT balance FROM accounts WHERE account_id = 1 FOR UPDATE;
