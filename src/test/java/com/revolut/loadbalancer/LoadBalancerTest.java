@@ -148,4 +148,44 @@ class LoadBalancerTest {
 
         assertTrue(maxDeviation < 0.5);
     }
+
+    @Test
+    void testReRegisterAfterUnregister() {
+        LoadBalancer lb = new LoadBalancer(2);
+        lb.register("server1");
+        lb.register("server2");
+        assertFalse(lb.register("server3"));
+        lb.unregister("server1");
+        assertTrue(lb.register("server3"));
+    }
+
+    @Test
+    void testGetWithSingleServer() {
+        LoadBalancer lb = new LoadBalancer(new RoundRobinSelectionStrategy());
+        lb.register("only-server");
+        assertEquals("only-server", lb.get());
+        assertEquals("only-server", lb.get());
+        assertEquals("only-server", lb.get());
+    }
+
+    @Test
+    void testGetAfterAllServersRemovedThrows() {
+        LoadBalancer lb = new LoadBalancer();
+        lb.register("server1");
+        lb.unregister("server1");
+        assertThrows(NoServersAvailableException.class, lb::get);
+    }
+
+    @Test
+    void testRoundRobinAfterUnregister() {
+        LoadBalancer lb = new LoadBalancer(new RoundRobinSelectionStrategy());
+        lb.register("server0");
+        lb.register("server1");
+        lb.register("server2");
+        lb.get(); // server0
+        lb.get(); // server1
+        lb.unregister("server1");
+        String next = lb.get();
+        assertTrue(List.of("server0", "server2").contains(next));
+    }
 }

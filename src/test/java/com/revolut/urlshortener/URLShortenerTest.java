@@ -2,6 +2,8 @@ package com.revolut.urlshortener;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,5 +66,41 @@ class URLShortenerTest {
     void testInvalidUrlHandling() {
         URLShortener shortener = new URLShortener(new CounterStrategy());
         assertThrows(IllegalArgumentException.class, () -> shortener.shorten("invalid-url"));
+    }
+
+    @Test
+    void testUnshortenUnknownReturnsNull() {
+        URLShortener shortener = new URLShortener(new CounterStrategy());
+        assertNull(shortener.unshorten("nonexistent"));
+    }
+
+    @Test
+    void testConcurrentShortenSameUrl() throws InterruptedException {
+        URLShortener shortener = new URLShortener(new CounterStrategy());
+        String url = "https://concurrent-test.com";
+        Set<String> results = Collections.synchronizedSet(new HashSet<>());
+
+        List<Thread> threads = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            threads.add(new Thread(() -> results.add(shortener.shorten(url))));
+        }
+        for (Thread t : threads) t.start();
+        for (Thread t : threads) t.join();
+
+        assertEquals(1, results.size(), "Concurrent shorten of same URL must return the same short URL");
+    }
+
+    @Test
+    void testValidUrlWithTrailingSlash() {
+        URLShortener shortener = new URLShortener(new CounterStrategy());
+        assertDoesNotThrow(() -> shortener.shorten("https://example.com/"));
+    }
+
+    @Test
+    void testShortenAlreadyShortenedUrlReturnsSameCode() {
+        URLShortener shortener = new URLShortener(new CounterStrategy());
+        String first = shortener.shorten("https://example.com");
+        String second = shortener.shorten("https://example.com");
+        assertEquals(first, second);
     }
 }
