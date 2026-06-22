@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class URLShortenerTest {
 
     private static final List<String> TEST_URLS = List.of(
-            "https://example.com",
-            "https://test.com/page1",
-            "https://another-example.org/about"
+        "https://example.com",
+        "https://test.com/page1",
+        "https://another-example.org/about"
     );
 
     @Test

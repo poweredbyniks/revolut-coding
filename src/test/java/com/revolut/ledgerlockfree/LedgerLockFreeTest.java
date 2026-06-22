@@ -54,7 +54,7 @@ class LedgerLockFreeTest {
         Account acc2 = new Account(2, new BigDecimal("100"));
         Ledger ledger = new Ledger();
         assertThrows(IllegalArgumentException.class,
-                () -> ledger.transferMoney(acc1, acc2, new BigDecimal("-10")));
+            () -> ledger.transferMoney(acc1, acc2, new BigDecimal("-10")));
         ledger.shutdown();
     }
 
@@ -63,9 +63,9 @@ class LedgerLockFreeTest {
         Account acc1 = new Account(1, new BigDecimal("100"));
         Ledger ledger = new Ledger();
         assertThrows(IllegalArgumentException.class,
-                () -> ledger.transferMoney(null, acc1, new BigDecimal("10")));
+            () -> ledger.transferMoney(null, acc1, new BigDecimal("10")));
         assertThrows(IllegalArgumentException.class,
-                () -> ledger.transferMoney(acc1, null, new BigDecimal("10")));
+            () -> ledger.transferMoney(acc1, null, new BigDecimal("10")));
         ledger.shutdown();
     }
 
